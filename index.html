@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123B5D">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Residencial das Américas">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>Residencial das Américas</title>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="eyebrow">ADMINISTRAÇÃO</div>
+        <h1>Residencial das Américas</h1>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn notification" id="notificationsBtn" title="Avisos"><span>🔔</span><b id="noticeBadge" hidden>0</b></button>
+        <button class="icon-btn" id="exportBtn" title="Backup">↥</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="page-home" class="page active">
+        <div class="hero-card">
+          <div>
+            <span class="eyebrow">BASE LOCAL</span>
+            <h2>Consulta rápida</h2>
+            <p>Os dados deste aparelho ficam armazenados localmente.</p>
+          </div>
+          <div class="search-wrap">
+            <span>⌕</span>
+            <input id="globalSearch" placeholder="Nome, apto, placa, profissão..." autocomplete="off">
+          </div>
+        </div>
+
+        <div class="notice-card" id="securityNotice">
+          <div class="notice-icon">🔐</div>
+          <div><strong>Administrador</strong><p>Toda inclusão, edição ou exclusão precisa de confirmação por PIN.</p></div>
+          <button class="link-btn" id="changePinBtn">Alterar PIN</button>
+        </div>
+
+        <div class="stats-grid">
+          <button class="stat-card" data-nav="residents"><span>Moradores</span><strong id="statResidents">0</strong></button>
+          <button class="stat-card" data-nav="units"><span>Apartamentos</span><strong id="statUnits">0</strong></button>
+          <button class="stat-card" data-nav="vehicles"><span>Veículos</span><strong id="statVehicles">0</strong></button>
+          <button class="stat-card" data-nav="garage"><span>Vagas</span><strong id="statGarages">0</strong></button>
+          <button class="stat-card" data-nav="notices"><span>Avisos</span><strong id="statNotices">0</strong></button>
+        </div>
+
+        <section class="section">
+          <div class="section-head"><h3>Resultados</h3><button class="link-btn" id="clearSearch">Limpar</button></div>
+          <div id="searchResults" class="result-list empty">Digite algo para pesquisar.</div>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><h3>Acesso rápido</h3></div>
+          <div class="quick-grid">
+            <button class="quick-card" data-nav="residents">👤<span>Moradores</span></button>
+            <button class="quick-card" data-nav="units">🏠<span>Apartamentos</span></button>
+            <button class="quick-card" data-nav="vehicles">🚗<span>Veículos</span></button>
+            <button class="quick-card" data-nav="garage">🅿️<span>Vagas</span></button>
+            <button class="quick-card" data-nav="notices">🔔<span>Avisos e histórico</span></button>
+          </div>
+        </section>
+      </section>
+
+      <section id="page-residents" class="page">
+        <div class="page-head"><div><span class="eyebrow">CADASTRO</span><h2>Moradores</h2></div><button class="primary-btn" id="newResidentBtn">+ Novo</button></div>
+        <div class="toolbar"><input id="residentSearch" placeholder="Buscar nome, profissão, telefone..."><select id="residentBlockFilter"><option value="">Todos os blocos</option></select></div>
+        <div id="residentList" class="list"></div>
+      </section>
+
+      <section id="page-units" class="page">
+        <div class="page-head"><div><span class="eyebrow">ESTRUTURA</span><h2>Apartamentos</h2></div></div>
+        <div class="toolbar"><input id="unitSearch" placeholder="Buscar apartamento ou bloco..."><select id="unitBlockFilter"><option value="">Todos os blocos</option></select></div>
+        <div id="unitList" class="unit-grid"></div>
+      </section>
+
+      <section id="page-vehicles" class="page">
+        <div class="page-head"><div><span class="eyebrow">GARAGEM</span><h2>Veículos e vagas</h2></div></div>
+        <div class="toolbar"><input id="vehicleSearch" placeholder="Placa, vaga, morador ou apartamento..."></div>
+        <div id="vehicleList" class="list"></div>
+      </section>
+
+      <section id="page-garage" class="page">
+        <div class="page-head"><div><span class="eyebrow">ESTACIONAMENTO</span><h2>Controle de vagas</h2></div><button class="primary-btn" id="newGarageRentalBtn">+ Alugar extra</button></div>
+        <div class="garage-summary">
+          <div class="summary-box"><span>Vagas privativas</span><strong id="garagePrivateCount">248</strong><small>1 para cada apartamento</small></div>
+          <div class="summary-box"><span>Vagas extras</span><strong id="garageExtraCount">36</strong><small>Do condomínio</small></div>
+          <div class="summary-box"><span>Extras alugadas</span><strong id="garageRentedCount">0</strong><small>Por unidades</small></div>
+          <div class="summary-box"><span>Extras disponíveis</span><strong id="garageAvailableCount">36</strong><small>Para locação</small></div>
+        </div>
+        <div class="notice-card"><div class="notice-icon">🅿️</div><div><strong>Regra da garagem</strong><p>Cada uma das 248 unidades possui 1 vaga privativa. As 36 vagas extras pertencem ao condomínio e podem ser alugadas pelas unidades.</p></div></div>
+        <div class="notice-tabs"><button class="tab active" data-garage-tab="private">Privativas</button><button class="tab" data-garage-tab="extra">Extras</button></div>
+        <div class="toolbar"><input id="garageSearch" placeholder="Buscar unidade, bloco, vaga extra..."> </div>
+        <div id="garageList" class="list"></div>
+      </section>
+
+      <section id="page-notices" class="page">
+        <div class="page-head"><div><span class="eyebrow">CONTROLE</span><h2>Avisos e histórico</h2></div><button class="primary-btn" id="newChangeBtn">+ Solicitar correção</button></div>
+        <div class="notice-tabs"><button class="tab active" data-tab="pending">Pendências</button><button class="tab" data-tab="history">Histórico</button></div>
+        <div id="pendingList" class="list"></div>
+        <div id="historyList" class="list" hidden></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button data-nav="home" class="nav-item active"><span>⌂</span>Início</button>
+      <button data-nav="residents" class="nav-item"><span>👤</span>Moradores</button>
+      <button data-nav="units" class="nav-item"><span>🏠</span>Apartamentos</button>
+      <button data-nav="vehicles" class="nav-item"><span>🚗</span>Veículos</button>
+      <button data-nav="garage" class="nav-item"><span>🅿️</span>Vagas</button>
+    </nav>
+  </div>
+
+  <dialog id="residentDialog">
+    <form method="dialog" id="residentForm">
+      <div class="dialog-head"><div><span class="eyebrow">ALTERAÇÃO PENDENTE</span><h3 id="residentDialogTitle">Novo morador</h3></div><button type="button" class="icon-btn" id="closeDialog">×</button></div>
+      <div class="photo-box"><img id="residentPhotoPreview" alt="Foto do morador"><div class="photo-actions"><label class="secondary-btn file-btn">📷 Tirar/selecionar foto<input id="formPhoto" type="file" accept="image/*" capture="user" hidden></label><button type="button" class="link-btn" id="removePhotoBtn">Remover</button></div></div>
+      <label>Bloco/Torre<select id="formBlock" required></select></label>
+      <label>Apartamento<select id="formUnit" required></select></label>
+      <label>Nome completo<input id="formName" required></label>
+      <label>Profissão<input id="formProfession" placeholder="Ex.: Engenheiro, médico, advogado"></label>
+      <label>Telefone<input id="formPhone" inputmode="tel" placeholder="(11) 99999-9999"></label>
+      <label>Pet / animal<input id="formPet" placeholder="Tipo ou raça"></label>
+      <div class="form-row"><label>Veículo<input id="formVehiclePlate" placeholder="ABC1D23"></label><label>Vaga<input id="formGarage" placeholder="G-12"></label></div>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelDialog">Cancelar</button><button type="submit" class="primary-btn">Enviar para confirmação</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="garageRentalDialog">
+    <form method="dialog" id="garageRentalForm">
+      <div class="dialog-head"><div><span class="eyebrow">VAGA EXTRA</span><h3>Solicitar locação</h3></div><button type="button" class="icon-btn" id="closeGarageRental">×</button></div>
+      <label>Vaga extra<select id="garageRentalSpace" required></select></label>
+      <label>Bloco/Torre<select id="garageRentalBlock" required></select></label>
+      <label>Apartamento<select id="garageRentalUnit" required></select></label>
+      <div class="form-row"><label>Início<input id="garageRentalStart" type="date"></label><label>Fim<input id="garageRentalEnd" type="date"></label></div>
+      <label>Observação<textarea id="garageRentalNotes" rows="3" placeholder="Ex.: segundo veículo da unidade"></textarea></label>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelGarageRental">Cancelar</button><button type="submit" class="primary-btn">Enviar para confirmação</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="pinDialog">
+    <form method="dialog" id="pinForm" class="pin-form">
+      <div class="dialog-head"><div><span class="eyebrow">AUTORIZAÇÃO</span><h3 id="pinTitle">Confirmar alteração</h3></div></div>
+      <p id="pinText" class="muted">Digite seu PIN de administrador.</p>
+      <input id="pinInput" inputmode="numeric" type="password" maxlength="8" placeholder="PIN" autocomplete="off" required>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelPin">Cancelar</button><button type="submit" class="primary-btn">Confirmar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="setupDialog">
+    <form method="dialog" id="setupForm" class="pin-form">
+      <div class="dialog-head"><div><span class="eyebrow">PRIMEIRO ACESSO</span><h3>Crie o PIN do administrador</h3></div></div>
+      <p class="muted">Esse PIN será exigido para efetivar mudanças no aparelho.</p>
+      <input id="setupPin" inputmode="numeric" type="password" maxlength="8" placeholder="Novo PIN" required>
+      <input id="setupPin2" inputmode="numeric" type="password" maxlength="8" placeholder="Repita o PIN" required>
+      <div class="dialog-actions"><button type="submit" class="primary-btn">Criar PIN</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="changeDialog">
+    <form method="dialog" id="changeForm">
+      <div class="dialog-head"><div><span class="eyebrow">PENDÊNCIA</span><h3>Solicitar correção</h3></div><button type="button" class="icon-btn" id="closeChange">×</button></div>
+      <label>Origem<input id="changeSource" placeholder="Ex.: Portaria, conferência, morador"></label>
+      <label>Assunto<input id="changeSubject" placeholder="Ex.: telefone incorreto"></label>
+      <label>Descrição<textarea id="changeDescription" rows="4" placeholder="Informe o que precisa ser corrigido"></textarea></label>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelChange">Cancelar</button><button type="submit" class="primary-btn">Registrar pendência</button></div>
+    </form>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

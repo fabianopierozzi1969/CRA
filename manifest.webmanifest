@@ -1,0 +1,14 @@
+{
+  "name": "Residencial das Américas - Administração",
+  "short_name": "Residencial Américas",
+  "description": "Cadastro e consulta local de moradores, unidades, veículos e vagas.",
+  "lang": "pt-BR",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f7fa",
+  "theme_color": "#123B5D",
+  "icons": [
+    {"src":"icons/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
